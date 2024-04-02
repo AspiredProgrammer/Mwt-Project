@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const ProductAPI = () => {
     const data = useSelector((state) => state.data.products);

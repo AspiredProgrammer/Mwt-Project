@@ -2,7 +2,11 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <div>Navbar</div>
+    <div>
+        <image src=""></image>
+
+
+    </div>
   )
 }
 

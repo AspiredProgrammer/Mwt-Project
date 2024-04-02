@@ -1,4 +1,6 @@
-const Register = ({ navigation }) => {
+import React, { useState } from "react";
+
+const Register = () => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -10,9 +12,16 @@ const Register = ({ navigation }) => {
     const [passError, setPassError] = useState(false)
     const [emptyField, setEmptyField] = useState(false)
     const [userError, setUserError] = useState(false)
+    const [errors, setErrors]=useState([]);
+    const[formData,setFormData]=useState({
+      name:"",
+      email:"",
+      password:"",
+      confirm_password:"",
+    });
   
-    const dispatch = useDispatch()
-    const errorMsg = useSelector((state) => state.users.errorMessage)
+    // const dispatch = useDispatch()
+    // const errorMsg = useSelector((state) => state.users.errorMessage)
   
     const handlePassVisibility = () => {
       if (icon == "eye-off"){
@@ -62,93 +71,144 @@ const Register = ({ navigation }) => {
       }
       
     }
+
+    const handleSubmit = async(e)=> {
+      e.preventDefault();
+
+      const fieldErrors=[];
+
+      if(!formData.name){
+        fieldErrors.push("Name is required")
+      }
+      if(!formData.email){
+        fieldErrors.push("Email is required")
+      }
+      if(!formData.password){
+        fieldErrors.push("Password is required")
+      }
+      if(!formData.confirm_password){
+        fieldErrors.push("Confirm password is required")
+      }
+
+      if(fieldErrors.length>0){
+        setErrors(fieldErrors.map((msg,index)=>({id:index, msg})));
+        return;
+      }
+      try { 
+        const response = await fetch("http://localhost:8000/user/register", { 
+          method: "POST", 
+          headers: { 
+            "Content-Type": "application/json", 
+          }, 
+          body: JSON.stringify(formData), 
+        }); 
+        const data = await response.json(); 
+        if (!response.ok) {  
+          setErrors(data.errors || []); 
+        } else { 
+          
+          console.log("User registered successfully"); 
+          alert("registration successful"); 
+          window.location.href = "/login"; 
+        } 
+      } catch (error) { 
+        console.error("Error registering user:", error); 
+      } 
+    }; 
+    
+    const handleChange = (e) => { 
+      setFormData({ 
+        ...formData, 
+        [e.target.name]: e.target.value, 
+      }); 
+    };
+
+
     return (
-      <View style={styles.container}>
-        <View style={styles.subContainer}>
+      <div style={styles.container}>
+        <div style={styles.subContainer}>
   
-          <Image style={[{marginTop: 15}]} source={require("../assets/blackWhiteLogo.png")}/>
+          <img style={[{marginTop: 15}]} source={require("../assets/blackWhiteLogo.png")}/>
   
-          <Text style={styles.heading}>Register</Text>
+          <div style={styles.heading}>Register</div>
   
-          <View style={styles.grouping}>
-            <Text style={styles.text}>
+          <div style={styles.grouping}>
+            <div style={styles.div}>
               Your name:
-            </Text>
-              <TextInput
+            </div>
+              <input
                 style={styles.inputFields}
                 value={name}
-                onChangeText={setName}
-                textContentType="name"
+                onChangediv={setName}
+                divContentType="name"
               />
-          </View>
-          <View style={styles.grouping}>
-            <Text>
+          </div>
+          <div style={styles.grouping}>
+            <div>
               Your email address:
-            </Text>
-            <TextInput
+            </div>
+            <input
               style={styles.inputFields}
               keyboardType="email-address"
               value={email}
-              onChangeText={setEmail}
-              textContentType="emailAddress"
+              onChangediv={setEmail}
+              divContentType="emailAddress"
             />
-          </View>
+          </div>
   
-          <View style={styles.grouping}>
-            <View style={[{flexDirection: "row"}]}>
+          <div style={styles.grouping}>
+            <div style={[{flexDirection: "row"}]}>
   
-              <Text>
+              <div>
                 Your password:
-              </Text>
+              </div>
               <Pressable onPress={handlePassVisibility}>
                 <MaterialCommunityIcons name={icon} size={22} color="#9F4146"/>
               </Pressable>
   
-            </View>
-              <TextInput
+            </div>
+              <input
                 style={styles.inputFields}
                 value={password}
-                onChangeText={setPassword}
-                secureTextEntry={passVisibility}
+                onChangediv={setPassword}
+                securedivEntry={passVisibility}
                 autoComplete="off"
-                textContentType="password"
+                divContentType="password"
                 autoCapitalize="none"
               />
             
-          </View>
+          </div>
   
-          <View style={styles.grouping}>
-          <View style={[{flexDirection: "row"}]}>
+          <div style={styles.grouping}>
+          <div style={[{flexDirection: "row"}]}>
   
-            <Text>
+            <div>
               Confirm password:
-            </Text>
+            </div>
             <Pressable onPress={handleConfirmPass}>
               <MaterialCommunityIcons name={icon} size={22} color="#9F4146"/>
             </Pressable>
   
-            </View>
-            <TextInput
+            </div>
+            <input
               style={styles.inputFields}
               autoComplete="off"
-              onChangeText={setConfirmPass}
-              secureTextEntry={showConfirmPass}
-              textContentType="password"
+              onChangediv={setConfirmPass}
+              securedivEntry={showConfirmPass}
+              divContentType="password"
               autoCapitalize="none"
             />
-          </View>
-          {passError && <Text style={styles.error}> Passwords do not match!</Text>}
-          {emptyField && <Text style={styles.error}> All fields must be filled!</Text>}
+          </div>
+          {passError && <div style={styles.error}> Passwords do not match!</div>}
+          {emptyField && <div style={styles.error}> All fields must be filled!</div>}
   
-          <TouchableOpacity onPress={registerHandler}>
-            
-            <View style={[styles.button, { backgroundColor: "#9F4146"}]}>
-              <Text style={[{color: "#fff",}]}>Complete registration</Text>
-            </View>
-  
-          </TouchableOpacity>
-        </View>
+          <button onClick={registerHandler} style={[styles.button, { backgroundColor: "#9F4146"}]}>
+          Complete registration
         
-      </View>
+          </button>
+        </div>
+        
+      </div>
     );
 };
+export default Register;

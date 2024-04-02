@@ -1,27 +1,16 @@
-const Login = ({ navigation }) => {
-    const [icon, setIcon] = useState("eye-off");
-    const [passVisibility, setPassVisibility] = useState(true);
-  
-    const dispatch = useDispatch()
+import { useState } from "react";
+import "./src/styles.css"
+
+const Login = ({ navigation }) => {  
     const errorMsg = useSelector((state) => state.users.errorMessage)
   
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [displayError, setDisplayError] = useState(false)
     
-    const handlePassVisibility = () => {
-      if (icon == "eye-off"){
-          setIcon("eye");
-          setPassVisibility(!passVisibility);
-      }else if (icon == "eye"){
-          setIcon("eye-off");
-          setPassVisibility(!passVisibility);
-      }
-    }
-  
     const actionHandler = () => {
      let user = {email, password}
-     dispatch(login(user))
+     
   
       if (errorMsg != ""){
           setDisplayError(true)
@@ -33,71 +22,60 @@ const Login = ({ navigation }) => {
     }
   
     return (
-      <View style={styles.container}>
-        <View style={styles.subContainer}>
+      <div id="container">
+        <div id="subContainer">
   
-          <Image style={[{marginTop: 15}]} source={require("../assets/blackWhiteLogo.png")}/>
+          <img style={[{marginTop: 15}]} src="./client/assets/e-Shop.png" alt="Logo"/>
   
-          <Text style={styles.heading}>Sign in</Text>
+          <div id="heading">Sign in</div>
   
-          <View>
-            <Text style={styles.text}>
+          <div>
+            <label id="text" for="email">
               Enter your email address:
-            </Text>
-              <TextInput
-                style={styles.inputFields}
+            </label>
+              <input
+                name="email"
+                id="inputFields"
                 value={email}
-                onChangeText={setEmail}
-                textContentType="emailAddress"
+                onChange={setEmail}
+                type="url"
+                required
               />
-          </View>
-          <View>
+          </div>
+          <div>
   
-            <View style={[{flexDirection: "row"}, styles.text]}>
-              <Text>
-                Enter your password:
-              </Text>
+          <d id="text" style={[{flexDirection: "row"}]}>
+              Enter your password:
+          </div>
   
-              <Pressable onPress={handlePassVisibility} style={[{alignSelf: "center"}]}>
-                  <MaterialCommunityIcons name={icon} size={22} color="#9F4146"/>
-              </Pressable>
-          </View>
-  
-            <TextInput
-              style={styles.inputFields}
+            <input
+              id="inputFields"
               value={password}
-              onChangeText={setPassword}
-              secureTextEntry={passVisibility}
-              autoComplete="off"
-              textContentType="password"
-              autoCapitalize="none"
+              onChange={setPassword}
             />
             
-          </View>
+          </div>
   
-          {displayError && <Text style={styles.error}>{errorMsg}</Text>}
+          {displayError && <div id="error">{errorMsg}</div>}
   
-          <TouchableOpacity onPress={actionHandler}>
-            
-            <View style={[styles.button, {backgroundColor:"#C1666B"}]}>
-              <Text style={[{color: "#fff"}]}>Sign in</Text>
-            </View>
-  
-          </TouchableOpacity>
+          <button id="button" style={{backgroundColor: "#C1666B", color: "#fff"}} onClick={actionHandler}>
+              Sign in  
+          </button>
             
   
-          <Text style={[{marginTop: 5}]}>
+          <div style={[{marginTop: 5}]}>
             Haven't registered? Register here!
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+          </div>
+          <div onClick={() => navigation.navigate("Register")}>
             
-            <View style={[styles.button, { backgroundColor: "#9F4146"}]}>
-              <Text style={[{color: "#fff"}]}>Create an account</Text>
-            </View>
+            <div id="button" style={ {backgroundColor: "#9F4146"}}>
+              <div style={[{color: "#fff"}]}>Create an account</div>
+            </div>
   
-          </TouchableOpacity>
-            <Text>{email}, {password}</Text>
-        </View>
-      </View>
+          </div>
+            <div>{email}, {password}</div>
+        </div>
+      </div>
     );
   };
+  export default Login
