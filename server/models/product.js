@@ -6,7 +6,7 @@ let productSchema = mongoose.Schema({
     required: true,
   },
   price: {
-    type: mongoose.Types.Decimal128,
+    type: Number,
     required: true,
   },
   description: {
@@ -18,7 +18,7 @@ let productSchema = mongoose.Schema({
     required: true,
   },
   rating: {
-    type: mongoose.Types.Decimal128,
+    type: Number,
     required: true,
   },
   quantity: {

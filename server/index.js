@@ -13,7 +13,7 @@ const session = require("express-session");
 const passport = require("passport");
 
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGODB || config.mongodb);
+mongoose.connect(process.env.MONGODB || config.mongodb, { dbName: "eshop" });
 let db = mongoose.connection;
 db.once("open", function () {
   console.log("Connected to MongoDB");
