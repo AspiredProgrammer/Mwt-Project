@@ -4,7 +4,6 @@ const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 
 let Product = require("../models/product");
-let User = require("../models/user");
 
 function verifyToken(req, res, next) {
   const token = req.headers["authorization"];
@@ -17,13 +16,14 @@ function verifyToken(req, res, next) {
   });
 }
 
-function verifyCredential(req, res, next){
+function verifyCredential(req, res, next) {
   const token = req.headers["authorization"];
   if (!token) return res.status(401).send("Unauthorized");
 
   jwt.verify(token, "secret", (err, decoded) => {
     if (err) return res.status(403).send("Invalid token");
-    console.log(decoded)
+    if (decoded.name != "admin") return res.status(401).send("Unauthorized");
+    req.user = decoded;
     next();
   });
 }
@@ -63,25 +63,22 @@ router
   .get(async (req, res) => {
     try {
       const product = await Product.findById(req.params.id);
-
-      res.json({
-        product: product,
-      });
+      res.json({ product: product });
     } catch (err) {
-      res.status(500).json({ error: "An error occurred" });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   })
-  .delete(verifyToken, async (req, res) => {
+  .delete(verifyCredential, async (req, res) => {
     try {
       const query = { _id: req.params.id };
-      const result = await Book.deleteOne(query);
+      const result = await Product.deleteOne(query);
       if (result.deletedCount > 0) {
         res.json({ message: "Successfully Deleted" });
       } else {
-        res.status(404).json({ error: "Book not found" });
+        res.status(404).json({ error: "Product not found" });
       }
     } catch (err) {
-      console.error("Error deleting book by id:", err);
+      console.error("Error deleting product by id:", err);
       res.status(500).json({ error: "Internal Server Error" });
     }
   });
@@ -91,13 +88,13 @@ router
   .get(async (req, res) => {
     try {
       const product = await Product.findById(req.params.id);
-      res.json({ product: product, genres: base_genres });
+      res.json({ product: product });
     } catch (err) {
-      console.error("Error fetching book by id:", err);
+      console.error("Error fetching product by id:", err);
       res.status(500).json({ error: "Internal Server Error" });
     }
   })
-  .post(verifyToken, async (req, res) => {
+  .post(verifyCredential, async (req, res) => {
     let product = {
       title: req.body.title,
       price: req.body.price,
@@ -105,14 +102,14 @@ router
       category: req.body.category,
       rating: req.body.rating,
       quantity: req.body.quantity,
-      image: req.body.image
+      image: req.body.image,
     };
     const query = { _id: req.params.id };
     try {
       await Product.updateOne(query, product);
       res.json({ message: "Successfully Updated" });
     } catch (err) {
-      console.error("Error updating book by id:", err);
+      console.error("Error updating product by id:", err);
       res.status(500).json({ error: "Internal Server Error" });
     }
   });

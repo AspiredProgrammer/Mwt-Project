@@ -16,51 +16,46 @@ router.use(
   })
 );
 
+router.post("/register", async (req, res) => {
+  await check("name", "Name is required").notEmpty().run(req);
+  await check("email", "Email is required").notEmpty().run(req);
+  await check("email", "Email is invalid").isEmail().run(req);
+  await check("password", "Password is required").notEmpty().run(req);
+  await check("confirm_password", "Confirm password is required")
+    .notEmpty()
+    .run(req);
+  await check("confirm_password", "Password and confirm password do not match")
+    .equals(req.body.password)
+    .run(req);
 
-router
-  .post("/register", async (req, res) => {
-    await check("name", "Name is required").notEmpty().run(req);
-    await check("email", "Email is required").notEmpty().run(req);
-    await check("email", "Email is invalid").isEmail().run(req);
-    await check("password", "Password is required").notEmpty().run(req);
-    await check("confirm_password", "Confirm password is required")
-      .notEmpty()
-      .run(req);
-    await check(
-      "confirm_password",
-      "Password and confirm password do not match"
-    )
-      .equals(req.body.password)
-      .run(req);
+  const errors = validationResult(req);
 
-    const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+  try {
+    let existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      return res.status(400).json({ msg: "User already exists" });
     }
 
-    try {
-      let existingUser = await User.findOne({ email: req.body.email });
-      if (existingUser) {
-        return res.status(400).json({ msg: "User already exists" });
-      }
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword,
+    });
 
-      const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword,
-      });
+    await newUser.save();
 
-      await newUser.save();
-
-      res.status(201).json({ msg: "User created successfully" });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
-  });
+    res.status(201).json({ msg: "User created successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 router.post("/login", async (req, res, next) => {
   await check("email", "Email is required").notEmpty().run(req);
