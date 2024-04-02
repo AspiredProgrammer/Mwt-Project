@@ -1,18 +1,22 @@
+// Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css";
+// Bootstrap Bundle JS
+import "bootstrap/dist/js/bootstrap.bundle.min";
+
 import React, { useState } from "react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const Register = () => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPass, setConfirmPass] = useState("")
-    const [icon, setIcon] = useState("eye-off");
+    const [icon, setIcon] = useState(FaRegEyeSlash);
     const [passVisibility, setPassVisibility] = useState(true);
     const [showConfirmPass, setShowConfirmPass] = useState(true)
   
-    const [passError, setPassError] = useState(false)
-    const [emptyField, setEmptyField] = useState(false)
-    const [userError, setUserError] = useState(false)
     const [errors, setErrors]=useState([]);
+
     const[formData,setFormData]=useState({
       name:"",
       email:"",
@@ -24,53 +28,54 @@ const Register = () => {
     // const errorMsg = useSelector((state) => state.users.errorMessage)
   
     const handlePassVisibility = () => {
-      if (icon == "eye-off"){
-          setIcon("eye");
+      if (icon === FaRegEyeSlash){
+          setIcon(FaRegEye);
           setPassVisibility(!passVisibility);
-      }else if (icon == "eye"){
-          setIcon("eye-off");
+      }else if (icon === FaRegEye){
+          setIcon(FaRegEyeSlash);
           setPassVisibility(!passVisibility);
       }
     }
     const handleConfirmPass = () => {
-      if (icon == "eye-off"){
-        setIcon("eye");
+      if (icon === FaRegEyeSlash){
+        setIcon(FaRegEye);
         setShowConfirmPass(!showConfirmPass);
-    }else if (icon == "eye"){
-        setIcon("eye-off");
+      }
+      else if (icon === FaRegEye){
+        setIcon(FaRegEyeSlash);
         setShowConfirmPass(!showConfirmPass);
-    }
+      }
     }
   
-    const registerHandler = () => {
-      if(name == "" || email == "" || password == "" || confirmPass == "" ){
-        setEmptyField(!emptyField)
-      }
-      else if (password != confirmPass){
-        setEmptyField(false)
-        setPassError(true)
-      }
-      else {
-        setEmptyField(true)
-        setPassError(false)
+    // const registerHandler = () => {
+    //   if(name === "" || email === "" || password === "" || confirmPass === "" ){
+    //     setEmptyField(!emptyField)
+    //   }
+    //   else if (password !== confirmPass){
+    //     setEmptyField(false)
+    //     setPassError(true)
+    //   }
+    //   else {
+    //     setEmptyField(true)
+    //     setPassError(false)
         
-        let user = {name, email, password}
-       console.log( dispatch(registerUser(user)))
+    //     let user = {name, email, password}
+    //   //  console.log( dispatch(registerUser(user)))
   
-        if(errorMsg != ""){
-          setUserError(true)
-          setEmptyField(false)
-          setPassError(false)
-        }
-        else{
-          setEmptyField(false)
-          setPassError(false)
-          setUserError(false)
-          navigation.navigate("Home")
-        }
-      }
+    //     if(errorMsg != ""){
+    //       setUserError(true)
+    //       setEmptyField(false)
+    //       setPassError(false)
+    //     }
+    //     else{
+    //       setEmptyField(false)
+    //       setPassError(false)
+    //       setUserError(false)
+    //       navigation.navigate("Home")
+    //     }
+    //   }
       
-    }
+    // }
 
     const handleSubmit = async(e)=> {
       e.preventDefault();
@@ -94,6 +99,7 @@ const Register = () => {
         setErrors(fieldErrors.map((msg,index)=>({id:index, msg})));
         return;
       }
+
       try { 
         const response = await fetch("http://localhost:8000/user/register", { 
           method: "POST", 
@@ -102,6 +108,7 @@ const Register = () => {
           }, 
           body: JSON.stringify(formData), 
         }); 
+
         const data = await response.json(); 
         if (!response.ok) {  
           setErrors(data.errors || []); 
@@ -125,86 +132,79 @@ const Register = () => {
 
 
     return (
-      <div style={styles.container}>
-        <div style={styles.subContainer}>
+      <div id="container">
+        <div id="subcontainer">
   
-          <img style={[{marginTop: 15}]} source={require("../assets/blackWhiteLogo.png")}/>
+          <img style={[{marginTop: 15}]} src="../assets/blackWhiteLogo.png" alt="logo"/>
   
-          <div style={styles.heading}>Register</div>
+          <div id="heading">Register</div>
   
-          <div style={styles.grouping}>
-            <div style={styles.div}>
+          <div id="grouping">
+            <label id="text" for="name">
               Your name:
-            </div>
+            </label>
               <input
-                style={styles.inputFields}
+                name="name"
+                id="inputFields"
                 value={name}
-                onChangediv={setName}
-                divContentType="name"
+                onChange={setName}
+                type="name"
               />
           </div>
-          <div style={styles.grouping}>
-            <div>
+          <div id="grouping">
+            <label id="text" for="email">
               Your email address:
-            </div>
+            </label>
             <input
-              style={styles.inputFields}
-              keyboardType="email-address"
+              name="email"
+              id="inputFields"
               value={email}
-              onChangediv={setEmail}
-              divContentType="emailAddress"
+              onChange={setEmail}
+              type="email"
             />
           </div>
   
-          <div style={styles.grouping}>
+          <div id="grouping">
             <div style={[{flexDirection: "row"}]}>
   
               <div>
                 Your password:
               </div>
-              <Pressable onPress={handlePassVisibility}>
-                <MaterialCommunityIcons name={icon} size={22} color="#9F4146"/>
-              </Pressable>
   
             </div>
               <input
-                style={styles.inputFields}
+                id="inputFields"
                 value={password}
-                onChangediv={setPassword}
+                onChange={setPassword}
                 securedivEntry={passVisibility}
                 autoComplete="off"
-                divContentType="password"
+                type="password"
                 autoCapitalize="none"
               />
             
           </div>
   
-          <div style={styles.grouping}>
+          <div id="grouping">
           <div style={[{flexDirection: "row"}]}>
   
-            <div>
+            <p>
               Confirm password:
-            </div>
-            <Pressable onPress={handleConfirmPass}>
-              <MaterialCommunityIcons name={icon} size={22} color="#9F4146"/>
-            </Pressable>
+            </p>
   
             </div>
             <input
-              style={styles.inputFields}
+              id="inputFields"
               autoComplete="off"
               onChangediv={setConfirmPass}
-              securedivEntry={showConfirmPass}
-              divContentType="password"
+              type="password"
               autoCapitalize="none"
             />
           </div>
-          {passError && <div style={styles.error}> Passwords do not match!</div>}
-          {emptyField && <div style={styles.error}> All fields must be filled!</div>}
+          {errors && <div id="error"> {}</div>}
   
-          <button onClick={registerHandler} style={[styles.button, { backgroundColor: "#9F4146"}]}>
-          Complete registration
-        
+          <button onClick={handleSubmit} style={[styles.button, { backgroundColor: "#9F4146"}]}>
+            Complete registration
+          
           </button>
         </div>
         

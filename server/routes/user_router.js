@@ -19,13 +19,13 @@ router.use(
 
 router
   .post("/register", async (req, res) => {
+
     await check("name", "Name is required").notEmpty().run(req);
     await check("email", "Email is required").notEmpty().run(req);
     await check("email", "Email is invalid").isEmail().run(req);
     await check("password", "Password is required").notEmpty().run(req);
-    await check("confirm_password", "Confirm password is required")
-      .notEmpty()
-      .run(req);
+    await check("confirm_password", "Confirm password is required").notEmpty().run(req);
+
     await check(
       "confirm_password",
       "Password and confirm password do not match"
