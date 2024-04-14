@@ -1,40 +1,46 @@
-// Bootstrap CSS
-import "bootstrap/dist/css/bootstrap.min.css";
-// Bootstrap Bundle JS
-import "bootstrap/dist/js/bootstrap.bundle.min";
-
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
-  const isLoggedIn = localStorage.getItem('token') !==null;
+  const isLoggedIn = localStorage.getItem("token") !== null;
+  const token = isLoggedIn ? localStorage.getItem("token") : null;
+  const decodedToken = token ? jwtDecode(token) : null;
+  const userName = decodedToken ? decodedToken.name : "";
+  const isAuthorized = isLoggedIn && userName === "admin";
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.href="/";
+    localStorage.removeItem("token");
+    window.location.href = "/";
   };
 
   return (
     <div>
-      <Link to="/"><img src="./assets/e-Shop-s.png" alt="logo"/></Link>
+      <Link to="/">
+        <img src={require("../assets/e-Shop.png")} width={100} alt="logo" />
+      </Link>
+      <br />
       {isLoggedIn && (
         <>
-          {/* Link to Ho */}
-          <Link to="/">Home</Link>
-          <br/>
           <button onClick={handleLogout}>Logout</button>
-          <br/>
+          <br />
         </>
       )}
       {!isLoggedIn && (
         <>
           <Link to="/register">Register</Link>
-          <br/>
+          <br />
           <Link to="/login">Login</Link>
-          <br/>
+          <br />
+        </>
+      )}
+      {isAuthorized && (
+        <>
+          <Link to="/product/add">Add Product</Link>
+          <br />
         </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
