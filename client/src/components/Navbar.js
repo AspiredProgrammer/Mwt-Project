@@ -21,6 +21,8 @@ const Navbar = () => {
       <br />
       {isLoggedIn && (
         <>
+          <Link to="/cart">Cart</Link>
+          <br />
           <button onClick={handleLogout}>Logout</button>
           <br />
         </>

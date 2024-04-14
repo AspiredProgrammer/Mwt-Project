@@ -3,9 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "../components/Navbar";
 
-const Product = () => {
+const ProductPage = () => {
   const [product, setProduct] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
 
   useEffect(() => {
@@ -48,6 +49,28 @@ const Product = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    let savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      let parsedCart = JSON.parse(savedCart);
+      let existingProduct = parsedCart.find((product) => product._id === id);
+      if (existingProduct) {
+        existingProduct.quantity += quantity;
+      } else {
+        parsedCart.push({
+          ...product,
+          quantity: quantity,
+        });
+      }
+      localStorage.setItem("cart", JSON.stringify(parsedCart));
+    } else {
+      localStorage.setItem(
+        "cart",
+        JSON.stringify([{ ...product, quantity: quantity }])
+      );
+    }
+  };
+
   const token = localStorage.getItem("token");
   const decodedToken = jwtDecode(token);
   const userName = decodedToken.name;
@@ -84,10 +107,33 @@ const Product = () => {
             </button>
           </div>
         )}
+        <div
+          style={{
+            display: "flex",
+            width: 150,
+            justifyContent: "space-between",
+          }}
+        >
+          <button
+            onClick={() => {
+              if (quantity > 1) setQuantity(quantity - 1);
+            }}
+          >
+            -
+          </button>
+          <div>{quantity}</div>
+          <button
+            onClick={() => {
+              setQuantity(quantity + 1);
+            }}
+          >
+            +
+          </button>
+          <button onClick={handleAddToCart}>Add to Cart</button>
+        </div>
       </div>
-      {/* Additional book details or actions can be added here */}
     </div>
   );
 };
 
-export default Product;
+export default ProductPage;

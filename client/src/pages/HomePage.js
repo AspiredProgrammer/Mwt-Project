@@ -34,8 +34,8 @@ const HomePage = ({ products }) => {
             </label>
           </div>
           <div className="info-box">
-            <p className="book-info">Price: {product.price}</p>
-            <p className="book-info">Rating: {product.rating}</p>
+            <p className="book-info">CAD$ {product.price.toFixed(2)}</p>
+            <p className="book-info">Rating: {product.rating} / 5</p>
           </div>
         </div>
       ))}

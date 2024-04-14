@@ -1,14 +1,13 @@
-import logo from "./assets/e-Shop.png";
 import "./App.css";
-import Navbar from "./components/Navbar";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Register from "./pages/RegisterPage";
-import Login from "./pages/LoginPage";
-import Home from "./pages/HomePage";
-import Product from "./pages/Product";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+import ProductPage from "./pages/ProductPage";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
+import CartPage from "./pages/CartPage";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -22,12 +21,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home products={products} />} />
-        <Route path="/product/:id" element={<Product />} />
+        <Route path="/" element={<HomePage products={products} />} />
+        <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/product/add" element={<AddProduct />} />
         <Route path="/product/edit/:id" element={<EditProduct />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/cart" element={<CartPage />} />
       </Routes>
     </BrowserRouter>
   );
