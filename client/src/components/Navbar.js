@@ -14,9 +14,9 @@ const Navbar = () => {
   };
 
   return (
-    <div>
+    <div className="nav">
       <Link to="/">
-        <img src={require("../assets/e-Shop.png")} width={100} alt="logo" />
+        <img src={require("../assets/e-Shop-s.png")} width={100} alt="logo" />
       </Link>
       <br />
       {isLoggedIn && (

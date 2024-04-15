@@ -29,6 +29,7 @@ function verifyCredential(req, res, next) {
 }
 
 router.route("/add").post(verifyToken, async (req, res) => {
+
   await check("title", "Title is required").notEmpty().run(req);
   await check("price", "Price is required").notEmpty().run(req);
   await check("description", "Description is required").notEmpty().run(req);
@@ -36,7 +37,9 @@ router.route("/add").post(verifyToken, async (req, res) => {
   await check("rating", "Rating is required").notEmpty().run(req);
   await check("quantity", "Quantity is required").notEmpty().run(req);
   await check("image", "Image is required").notEmpty().run(req);
+
   const errors = validationResult(req);
+
   if (errors.isEmpty()) {
     let product = new Product();
     product.title = req.body.title;
@@ -72,6 +75,7 @@ router
     try {
       const query = { _id: req.params.id };
       const result = await Product.deleteOne(query);
+      
       if (result.deletedCount > 0) {
         res.json({ message: "Successfully Deleted" });
       } else {

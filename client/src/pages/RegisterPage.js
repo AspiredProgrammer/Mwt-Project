@@ -47,7 +47,7 @@ const Register = () => {
         setErrors(data.errors || []);
       } else {
         console.log("User registered successfully");
-        alert("registration successful");
+        alert("Registration successful!");
         window.location.href = "/login";
       }
     } catch (error) {

@@ -69,6 +69,13 @@ const ProductPage = () => {
         JSON.stringify([{ ...product, quantity: quantity }])
       );
     }
+    let pr_title =
+      product.title.length > 20 ?
+        product.title.slice(0, 25) + "..."
+        : product.title;
+
+    alert(`${pr_title} (${product.quantity}) was added to cart!`);
+    //temporary alert - add an cart icon that has the number of items (in the cart) displayed for user if there is at least one item
   };
 
   const token = localStorage.getItem("token");
@@ -80,15 +87,18 @@ const ProductPage = () => {
   return (
     <div className="book-container-book">
       <Navbar />
-      <img src={product.image} width={250} />
+      <img src={product.image} width={250} alt="product_image" />
+
       <h1 className="book-title">{product.title}</h1>
       <h5 className="book-author">CAD$ {product.price}</h5>
+
       <div className="book-details">
         <p>Category: {product.category}</p>
         <p>Rating: {product.rating}</p>
         <p>Quantity: {product.quantity}</p>
         <p>Description: {product.description}</p>
       </div>
+
       <div className="book-btn-container">
         {isAuthorized && (
           <div>

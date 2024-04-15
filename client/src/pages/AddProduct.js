@@ -134,7 +134,8 @@ const AddProduct = () => {
             name="rating"
             type="number"
             value={formData.rating}
-            onChange={handleInputChange}
+            //input must be betwen 1-5 as it's displayed as "num"/5 , set some kind of limit on client-side
+            onChange={handleInputChange} 
           />
         </div>
 

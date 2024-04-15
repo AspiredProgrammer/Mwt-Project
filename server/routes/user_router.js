@@ -17,6 +17,7 @@ router.use(
 );
 
 router.post("/register", async (req, res) => {
+
   await check("name", "Name is required").notEmpty().run(req);
   await check("email", "Email is required").notEmpty().run(req);
   await check("email", "Email is invalid").isEmail().run(req);
@@ -37,7 +38,7 @@ router.post("/register", async (req, res) => {
   try {
     let existingUser = await User.findOne({ email: req.body.email });
     if (existingUser) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res.status(400).json({ msg: "User already exists" }); //this should pop up on client-side as feedback
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -58,6 +59,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res, next) => {
+  
   await check("email", "Email is required").notEmpty().run(req);
   await check("email", "Email is invalid").isEmail().run(req);
   await check("password", "Password is required").notEmpty().run(req);

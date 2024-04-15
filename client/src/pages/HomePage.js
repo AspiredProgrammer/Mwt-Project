@@ -20,7 +20,7 @@ const HomePage = ({ products }) => {
       {userName && <p>Hello, {userName}!</p>}
       {products.map((product) => (
         <div key={product._id} className="book-container">
-          <img src={product.image} width={100} />
+          <img src={product.image} width={100} alt="product_image"/>
           <div className="title-box">
             <label className="book-title">
               <a
