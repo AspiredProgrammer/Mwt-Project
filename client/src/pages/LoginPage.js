@@ -41,8 +41,8 @@ const Login = () => {
   return (
     <div>
       <Navbar />
-      <div class="card p-1 align-items-center m-5 " style={{borderColor: "#143A27"}}>
-        <h1 class="card-title">Login</h1>
+      <div id="login-container">
+        <h1>Login</h1>
 
         {error && <p>{error}</p>}
 
@@ -53,8 +53,8 @@ const Login = () => {
             ))}
           </ul>
         )}
-        <form onSubmit={handleLogin} class="card-body">
-          <div class="mb-1">
+        <form onSubmit={handleLogin}>
+          <div id="input">
             <label>Email:</label>
             <input
               type="email"
@@ -63,7 +63,7 @@ const Login = () => {
             />
           </div>
 
-          <div>
+          <div id="input">
             <label>Password:</label>
             <input
               type="password"
@@ -71,11 +71,23 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
-          <button type="submit">Login</button>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <button id="btn-log-in" type="submit">
+              Login
+            </button>
+            <p>Haven't registered? Register here!</p>
+            <button id="btn-register">Create an account</button>
+          </div>
         </form>
       </div>
-      <Footer pos={"absolute"}/>
+      <Footer pos={"absolute"} />
     </div>
   );
 };

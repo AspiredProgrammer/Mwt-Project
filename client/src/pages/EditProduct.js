@@ -166,6 +166,8 @@ const EditProduct = () => {
                 className="form-control"
                 name="rating"
                 type="number"
+                min={1}
+                max={5}
                 value={updatedProduct.rating}
                 onChange={handleInputChange}
               />
