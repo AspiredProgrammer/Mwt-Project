@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -152,6 +153,7 @@ const AddProduct = () => {
 
         <input className="btn btn-primary" type="submit" value="Submit" />
       </form>
+      <Footer/>
     </div>
   );
 };

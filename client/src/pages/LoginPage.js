@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "../styles.css";
 
 const Login = () => {
@@ -70,6 +71,7 @@ const Login = () => {
 
         <button type="submit">Login</button>
       </form>
+      <Footer/>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -122,6 +123,7 @@ const Register = () => {
 
         <button type="submit">Submit</button>
       </form>
+      <Footer/>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const HomePage = ({ products }) => {
   const [userName, setUserName] = useState("");
@@ -41,6 +42,7 @@ const HomePage = ({ products }) => {
       ))}
       <br />
       <br />
+      <Footer/>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const EditProduct = () => {
   const [product, setProduct] = useState({});
@@ -187,6 +188,7 @@ const EditProduct = () => {
       ) : (
         <p>You are not authorized to view this page.</p>
       )}
+      <Footer/>
     </div>
   );
 };

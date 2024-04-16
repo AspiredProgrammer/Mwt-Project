@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const ProductPage = () => {
   const [product, setProduct] = useState({});
@@ -142,6 +143,7 @@ const ProductPage = () => {
           <button onClick={handleAddToCart}>Add to Cart</button>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
