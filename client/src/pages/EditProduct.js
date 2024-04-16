@@ -99,7 +99,7 @@ const EditProduct = () => {
   };
 
   return (
-    <div className="edit-book-container">
+    <div className="edit-product-container">
       <Navbar />
       {isAuthorized ? (
         <>

@@ -41,37 +41,41 @@ const Login = () => {
   return (
     <div>
       <Navbar />
-      <h1>Login</h1>
-      {error && <p>{error}</p>}
-      {errors.length > 0 && (
-        <ul>
-          {errors.map((err, index) => (
-            <li key={index}>{err}</li>
-          ))}
-        </ul>
-      )}
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+      <div class="card p-1 align-items-center m-5 " style={{borderColor: "#143A27"}}>
+        <h1 class="card-title">Login</h1>
 
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        {error && <p>{error}</p>}
 
-        <button type="submit">Login</button>
-      </form>
-      <Footer/>
+        {errors.length > 0 && (
+          <ul id="error">
+            {errors.map((err, index) => (
+              <li key={index}>{err}</li>
+            ))}
+          </ul>
+        )}
+        <form onSubmit={handleLogin} class="card-body">
+          <div class="mb-1">
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button type="submit">Login</button>
+        </form>
+      </div>
+      <Footer pos={"absolute"}/>
     </div>
   );
 };

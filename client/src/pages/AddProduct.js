@@ -69,7 +69,7 @@ const AddProduct = () => {
   }
 
   return (
-    <div className="add-book-container">
+    <div className="add-product-container">
       <Navbar />
       <h1>Add Product</h1>
       <form onSubmit={handleSubmit}>
@@ -135,7 +135,8 @@ const AddProduct = () => {
             name="rating"
             type="number"
             value={formData.rating}
-            //input must be betwen 1-5 as it's displayed as "num"/5 , set some kind of limit on client-side
+            max={5}
+            min={0}
             onChange={handleInputChange} 
           />
         </div>
@@ -153,7 +154,7 @@ const AddProduct = () => {
 
         <input className="btn btn-primary" type="submit" value="Submit" />
       </form>
-      <Footer/>
+      <Footer pos={"absolute"}/>
     </div>
   );
 };

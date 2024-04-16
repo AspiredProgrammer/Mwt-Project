@@ -123,7 +123,7 @@ const Register = () => {
 
         <button type="submit">Submit</button>
       </form>
-      <Footer/>
+      <Footer pos={"absolute"}/>
     </div>
   );
 };
