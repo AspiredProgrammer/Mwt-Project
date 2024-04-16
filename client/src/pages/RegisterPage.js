@@ -37,13 +37,12 @@ const Register = () => {
 
     try {
       const response = await fetch("http://localhost:8000/user/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
       const data = await response.json();
       if (!response.ok) {
         setErrors(data.errors || []);
@@ -232,6 +231,7 @@ const Register = () => {
             </div>
 
             <button
+              id=""
               type="submit"
               style={{
                 backgroundColor: "#39b575",
@@ -244,7 +244,7 @@ const Register = () => {
                 transition: "background-color 0.3s ease",
               }}
             >
-              Submit
+              Complete registeration
             </button>
           </form>
         </div>

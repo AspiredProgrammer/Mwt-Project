@@ -11,6 +11,10 @@ const ProductCard = ({ product }) => {
         padding: "10px",
         borderRadius: "5px",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        justifyContent: "center",
+        display:"flex",
+        flexDirection: "column",
+        alignItems: "center"
       }}
     >
       <img src={product.image} width={100} alt="product_image" />

@@ -65,7 +65,6 @@ const ProductPage = () => {
   };
 
   const handleAddToCart = () => {
-
     let savedCart = localStorage.getItem("cart");
     if (savedCart) {
       let parsedCart = JSON.parse(savedCart);
@@ -90,11 +89,10 @@ const ProductPage = () => {
         ? product.title.slice(0, 25) + "..."
         : product.title;
 
-    if(!isLoggedIn){
+    if (!isLoggedIn) {
       window.location.href = "/login";
-      alert("Please login to access your added items!")
-    }
-    else {
+      alert("Please login to access your added items!");
+    } else {
       alert(`${pr_title} was added to the cart!`);
     }
   };
@@ -107,11 +105,13 @@ const ProductPage = () => {
         style={{
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
           gap: "20px",
           padding: "20px",
           backgroundColor: "white",
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
           borderRadius: "5px",
+          width: "80%",
         }}
       >
         <img src={product.image} width={250} alt="product_image" />
@@ -126,7 +126,7 @@ const ProductPage = () => {
           </div>
           <div className="product-actions">
             {isAuthorized && (
-              <div>
+              <div >
                 <Link
                   className="product-btn edit-product-btn"
                   to={`/product/edit/${product._id}`}
@@ -134,8 +134,10 @@ const ProductPage = () => {
                     backgroundColor: "#39b575",
                     color: "white",
                     textDecoration: "none",
-                    padding: "5px 10px",
+                    padding: "5px 7px",
                     borderRadius: "5px",
+                    fontSize: "13px",
+                    margin: 2,
                   }}
                 >
                   Edit Product
@@ -148,8 +150,12 @@ const ProductPage = () => {
                     backgroundColor: "#39b575",
                     color: "white",
                     border: "none",
-                    padding: "5px 10px",
+                    padding: "6px 7px",
                     borderRadius: "5px",
+                    fontSize: "13px",
+                    margin: 2,
+                    alignSelf: "center",
+                    cursor: "pointer",
                   }}
                 >
                   Delete Product
@@ -164,43 +170,55 @@ const ProductPage = () => {
                 alignItems: "center",
               }}
             >
-              <button
-                onClick={() => {
-                  if (quantity > 1) setQuantity(quantity - 1);
-                }}
+              <div
                 style={{
-                  backgroundColor: "#39b575",
-                  color: "white",
-                  border: "none",
-                  padding: "5px 10px",
-                  borderRadius: "5px",
+                  display: "flex",
+                  flexDirection: "row",
+                  // marginRight: 5,
                 }}
               >
-                -
-              </button>
-              <div>{quantity}</div>
-              <button
-                onClick={() => {
-                  setQuantity(quantity + 1);
-                }}
-                style={{
-                  backgroundColor: "#39b575",
-                  color: "white",
-                  border: "none",
-                  padding: "5px 10px",
-                  borderRadius: "5px",
-                }}
-              >
-                +
-              </button>
+                <button
+                  onClick={() => {
+                    if (quantity > 1) setQuantity(quantity - 1);
+                  }}
+                  style={{
+                    backgroundColor: "#39b575",
+                    color: "white",
+                    border: "none",
+                    padding: "2px 10px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  -
+                </button>
+                <div>{quantity}</div>
+                <button
+                  onClick={() => {
+                    setQuantity(quantity + 1);
+                  }}
+                  style={{
+                    backgroundColor: "#39b575",
+                    color: "white",
+                    border: "none",
+                    padding: "2px 10px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  +
+                </button>
+              </div>
               <button
                 onClick={handleAddToCart}
                 style={{
                   backgroundColor: "#39b575",
                   color: "white",
                   border: "none",
-                  padding: "5px 10px",
+                  padding: "5px 7px",
                   borderRadius: "5px",
+                  marginTop: 2,
+                  cursor: "pointer",
                 }}
               >
                 Add to Cart
@@ -209,7 +227,7 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
-      <Footer pos={"absolute"}/>
+      <Footer pos={"sticky"}/>
     </div>
   );
 };
