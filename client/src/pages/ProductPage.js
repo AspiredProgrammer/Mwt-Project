@@ -65,6 +65,7 @@ const ProductPage = () => {
   };
 
   const handleAddToCart = () => {
+
     let savedCart = localStorage.getItem("cart");
     if (savedCart) {
       let parsedCart = JSON.parse(savedCart);
@@ -89,7 +90,13 @@ const ProductPage = () => {
         ? product.title.slice(0, 25) + "..."
         : product.title;
 
-    alert(`${pr_title} (${product.quantity}) was added to cart!`);
+    if(!isLoggedIn){
+      window.location.href = "/login";
+      alert("Please login to access your added items!")
+    }
+    else {
+      alert(`${pr_title} was added to the cart!`);
+    }
   };
 
   return (
@@ -202,7 +209,7 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer pos={"absolute"}/>
     </div>
   );
 };
