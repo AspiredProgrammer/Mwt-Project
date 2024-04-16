@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 const ProductPage = () => {
   const [product, setProduct] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
 
@@ -14,6 +15,15 @@ const ProductPage = () => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
+      try {
+        const decodedToken = jwtDecode(token);
+        const userName = decodedToken.name;
+        setIsAuthorized(userName === "admin");
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        setIsLoggedIn(false);
+        setIsAuthorized(false);
+      }
     }
 
     fetch(`http://localhost:8000/product/${id}`)
@@ -31,19 +41,24 @@ const ProductPage = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/product/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data.message);
-        alert("Successfully deleted");
-        window.location.href = "/";
+      const token = localStorage.getItem("token");
+      if (token) {
+        const response = await fetch(`http://localhost:8000/product/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.message);
+          alert("Successfully deleted");
+          window.location.href = "/";
+        } else {
+          console.error("Error deleting product:", response.statusText);
+        }
       } else {
-        console.error("Error deleting product:", response.statusText);
+        console.error("No token found in local storage");
       }
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -71,76 +86,121 @@ const ProductPage = () => {
       );
     }
     let pr_title =
-      product.title.length > 20 ?
-        product.title.slice(0, 25) + "..."
+      product.title.length > 20
+        ? product.title.slice(0, 25) + "..."
         : product.title;
 
     alert(`${pr_title} (${product.quantity}) was added to cart!`);
-    //temporary alert - add an cart icon that has the number of items (in the cart) displayed for user if there is at least one item
   };
 
-  const token = localStorage.getItem("token");
-  const decodedToken = jwtDecode(token);
-  const userName = decodedToken.name;
-
-  const isAuthorized = isLoggedIn && userName === "admin";
-
   return (
-    <div className="book-container-book">
+    <div className="product-container">
       <Navbar />
-      <img src={product.image} width={250} alt="product_image" />
-
-      <h1 className="book-title">{product.title}</h1>
-      <h5 className="book-author">CAD$ {product.price}</h5>
-
-      <div className="book-details">
-        <p>Category: {product.category}</p>
-        <p>Rating: {product.rating}</p>
-        <p>Quantity: {product.quantity}</p>
-        <p>Description: {product.description}</p>
-      </div>
-
-      <div className="book-btn-container">
-        {isAuthorized && (
-          <div>
-            <Link
-              className="book-btn edit-book-btn"
-              to={`/product/edit/${product._id}`}
-            >
-              Edit Prodcut
-            </Link>
-            <button
-              className="book-btn delete-book-btn"
-              data-id={product._id}
-              onClick={handleDelete}
-            >
-              Delete Product
-            </button>
+      <div
+        className="product-details"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "20px",
+          padding: "20px",
+          backgroundColor: "white",
+          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          borderRadius: "5px",
+        }}
+      >
+        <img src={product.image} width={250} alt="product_image" />
+        <div>
+          <h1 className="product-title">{product.title}</h1>
+          <h5 className="product-price">CAD$ {product.price}</h5>
+          <div className="product-details">
+            <p>Category: {product.category}</p>
+            <p>Rating: {product.rating}</p>
+            <p>Quantity: {product.quantity}</p>
+            <p>Description: {product.description}</p>
           </div>
-        )}
-        <div
-          style={{
-            display: "flex",
-            width: 150,
-            justifyContent: "space-between",
-          }}
-        >
-          <button
-            onClick={() => {
-              if (quantity > 1) setQuantity(quantity - 1);
-            }}
-          >
-            -
-          </button>
-          <div>{quantity}</div>
-          <button
-            onClick={() => {
-              setQuantity(quantity + 1);
-            }}
-          >
-            +
-          </button>
-          <button onClick={handleAddToCart}>Add to Cart</button>
+          <div className="product-actions">
+            {isAuthorized && (
+              <div>
+                <Link
+                  className="product-btn edit-product-btn"
+                  to={`/product/edit/${product._id}`}
+                  style={{
+                    backgroundColor: "#39b575",
+                    color: "white",
+                    textDecoration: "none",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Edit Product
+                </Link>
+                <button
+                  className="product-btn delete-product-btn"
+                  data-id={product._id}
+                  onClick={handleDelete}
+                  style={{
+                    backgroundColor: "#39b575",
+                    color: "white",
+                    border: "none",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Delete Product
+                </button>
+              </div>
+            )}
+            <div
+              style={{
+                display: "flex",
+                width: 150,
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <button
+                onClick={() => {
+                  if (quantity > 1) setQuantity(quantity - 1);
+                }}
+                style={{
+                  backgroundColor: "#39b575",
+                  color: "white",
+                  border: "none",
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                }}
+              >
+                -
+              </button>
+              <div>{quantity}</div>
+              <button
+                onClick={() => {
+                  setQuantity(quantity + 1);
+                }}
+                style={{
+                  backgroundColor: "#39b575",
+                  color: "white",
+                  border: "none",
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                }}
+              >
+                +
+              </button>
+              <button
+                onClick={handleAddToCart}
+                style={{
+                  backgroundColor: "#39b575",
+                  color: "white",
+                  border: "none",
+                  padding: "5px 10px",
+                  borderRadius: "5px",
+                }}
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <Footer/>
